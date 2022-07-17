@@ -1,0 +1,44 @@
+{
+    "name": "radiantabyss/packages-core",
+    "description": "RadiantAbyss Package: Core",
+    "keywords": [
+        "ra"
+    ],
+    "homepage": "https://packages.radiantabyss.com/core",
+    "license": "proprietary",
+    "type": "library",
+    "authors": [
+        {
+            "name": "RA",
+            "email": "robert@radiantabyss.com",
+            "role": "owner"
+        }
+    ],
+    "require": {
+        "php": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "RA\\Core\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RA\\Core\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RA\\Core\\CoreServiceProvider"
+            ]
+        }
+    }
+}
