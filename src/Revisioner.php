@@ -1,7 +1,7 @@
 <?php
 namespace RA\Core;
 
-use RA\Models\Revision as Model;
+use RA\Core\Models\Revision as Model;
 
 class Revisioner
 {
