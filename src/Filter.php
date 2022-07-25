@@ -24,7 +24,7 @@ trait Filter
                 continue;
             }
 
-            if (in_array($key, ['order', 'order_by', 'page', 'per-page', 'export_csv'])) {
+            if (in_array($key, ['order', 'order_by', 'page', 'per_page', 'export_csv'])) {
                 continue;
             }
 
