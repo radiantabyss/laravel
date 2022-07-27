@@ -118,7 +118,15 @@ function decode_json($string) {
     return $string;
 }
 
-function encode_json($array) {
+function encode_json($array, $null_if_empty = true) {
+    if ( gettype($array) == 'string' ) {
+        return $array;
+    }
+
+    if ( $array === null || !count($array) ) {
+        return $null_if_empty ? null : json_encode([]);
+    }
+
     return json_encode($array);
 }
 
@@ -244,4 +252,37 @@ function get_block_css_classes($data) {
 
     return trim(preg_replace('/\s+/', ' ', $classes));
 
+}
+
+function start_load_time() {
+    $time = microtime();
+    $time = explode(' ', $time);
+    $time = $time[1] + $time[0];
+    $GLOBALS['load_time_start'] = $time;
+    $GLOBALS['load_times'] = [];
+}
+
+function get_load_time($total = false) {
+    $time = microtime();
+    $time = explode(' ', $time);
+    $time = $time[1] + $time[0];
+    $time = round(($time - $GLOBALS['load_time_start']), 4);
+
+    foreach ( $GLOBALS['load_times'] as $load_time ) {
+        $time -= $load_time;
+    }
+
+    $GLOBALS['load_times'][] = $time;
+
+    echo ($total ? array_sum($GLOBALS['load_times']) : $time)."\n";
+}
+
+function add_ordinal_suffix($number) {
+    $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+    if ( (($number % 100) >= 11) && (($number%100) <= 13) ) {
+        return $number. 'th';
+    }
+    else {
+        return $number. $ends[$number % 10];
+    }
 }
