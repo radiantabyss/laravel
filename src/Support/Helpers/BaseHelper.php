@@ -60,13 +60,6 @@ function selected($var, $val) {
     return ($var == $val ? 'selected="selected"' : '');
 }
 
-function get_controller_name() {
-    $routeArray = app('request')->route()->getAction();
-    $controllerAction = class_basename($routeArray['controller']);
-    list($controllerName, $actionName) = explode('@', $controllerAction);
-    return str_replace('_', '-', \Str::snake((str_replace('Controller', '', $controllerName))));
-}
-
 function ints_to_strings($arr) {
     foreach( $arr as &$var ) {
         $var = (string) $var;
