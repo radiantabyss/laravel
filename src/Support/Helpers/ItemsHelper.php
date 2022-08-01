@@ -1,4 +1,17 @@
 <?php
+function findBy($items, $value, $key = 'id') {
+    foreach ( $items as $item ) {
+        if ( is_object($item) && $item->$key == $value ) {
+            return $item;
+        }
+        else if ( !is_object($item) && $item[$key] == $value ) {
+            return $item;
+        }
+    }
+
+    return false;
+}
+
 function groupBy($items, $key = 'id') {
     $newItems = [];
     foreach ($items as $item) {
