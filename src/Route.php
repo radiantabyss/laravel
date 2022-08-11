@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Route as LaravelRoute;
 class Route extends LaravelRoute
 {
     public static function get($url, $action) {
-        parent::get($url, self::formatAction($action));
+        return parent::get($url, self::formatAction($action));
     }
 
     public static function post($url, $action) {
-        parent::post($url, self::formatAction($action));
+        return parent::post($url, self::formatAction($action));
     }
 
     private static function formatAction($action) {
