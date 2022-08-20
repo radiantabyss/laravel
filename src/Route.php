@@ -13,6 +13,10 @@ class Route extends LaravelRoute
         return parent::post($url, self::formatAction($action));
     }
 
+    public static function any($url, $action) {
+        return parent::any($url, self::formatAction($action));
+    }
+
     private static function formatAction($action) {
         if ( !preg_match('/\\\\Actions/', $action) ) {
             preg_match('/(\w+)\\\\/', $action, $match);
