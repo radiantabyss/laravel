@@ -1,67 +1,79 @@
 <?php
-function findBy($items, $value, $key = 'id') {
-    foreach ( $items as $item ) {
-        if ( is_object($item) && $item->$key == $value ) {
-            return $item;
+if ( !function_exists('findBy') ) {
+    function findBy($items, $value, $key = 'id') {
+        foreach ( $items as $item ) {
+            if ( is_object($item) && $item->$key == $value ) {
+                return $item;
+            }
+            else if ( !is_object($item) && $item[$key] == $value ) {
+                return $item;
+            }
         }
-        else if ( !is_object($item) && $item[$key] == $value ) {
-            return $item;
-        }
-    }
 
-    return false;
+        return false;
+    }
 }
 
-function groupBy($items, $key = 'id') {
-    $newItems = [];
-    foreach ($items as $item) {
-        if (is_object($item)) {
-            $newItems[$item->{$key}][] = $item;
-        } else {
-            $newItems[$item[$key]][] = $item;
+if ( !function_exists('groupBy') ) {
+    function groupBy($items, $key = 'id') {
+        $newItems = [];
+        foreach ($items as $item) {
+            if (is_object($item)) {
+                $newItems[$item->{$key}][] = $item;
+            } else {
+                $newItems[$item[$key]][] = $item;
+            }
         }
+        return $newItems;
     }
-    return $newItems;
 }
 
-function keyBy($items, $key = 'id') {
-    $newItems = [];
-    foreach ($items as $item) {
-        if (is_object($item)) {
-            $newItems[$item->{$key}] = $item;
-        } else {
-            $newItems[$item[$key]] = $item;
+if ( !function_exists('keyBy') ) {
+    function keyBy($items, $key = 'id') {
+        $newItems = [];
+        foreach ($items as $item) {
+            if (is_object($item)) {
+                $newItems[$item->{$key}] = $item;
+            } else {
+                $newItems[$item[$key]] = $item;
+            }
         }
+        return $newItems;
     }
-    return $newItems;
 }
 
-function pluck($items, $key = 'id') {
-    $plucked = [];
-    foreach ($items as $item) {
-        if (is_object($item)) {
-            $plucked[] = $item->{$key};
-        } else {
-            $plucked[] = $item[$key];
+if ( !function_exists('pluck') ) {
+    function pluck($items, $key = 'id') {
+        $plucked = [];
+        foreach ($items as $item) {
+            if (is_object($item)) {
+                $plucked[] = $item->{$key};
+            } else {
+                $plucked[] = $item[$key];
+            }
         }
-    }
 
-    return $plucked;
+        return $plucked;
+    }
 }
 
-function spread($arr, $spread) {
-    foreach ( $spread as $key => $value ) {
-        if ( is_object($arr) ) {
-            $arr->$key = $value;
+if ( !function_exists('spread') ) {
+    function spread($arr, $spread) {
+        foreach ( $spread as $key => $value ) {
+            if ( is_object($arr) ) {
+                $arr->$key = $value;
+            }
+            else {
+                $arr[$key] = $value;
+            }
         }
-        else {
-            $arr[$key] = $value;
-        }
-    }
 
-    return $arr;
+        return $arr;
+    }
 }
 
-function toArray($var) {
-    return json_decode(json_encode($var), true);
+if ( !function_exists('toArray') ) {
+    function toArray($var) {
+        return json_decode(json_encode($var), true);
+    }
 }

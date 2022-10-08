@@ -50,7 +50,7 @@ class MediaHelper
         return config('path.uploads_path').str_replace($pathinfo['filename'].'.'.$pathinfo['extension'], $pathinfo['filename'].$thumb.'.'.$pathinfo['extension'], $url);
     }
 
-    public function makeMediaThumb($image_name, $type, $thumb, $thumb_size) {
+    public function makeMediaThumb($image_name, $type, $thumb, $thumb_size, $keep_ratio = false) {
         if ( !$thumb_size[0] && !$thumb_size[1] ) {
             return;
         }
@@ -69,6 +69,14 @@ class MediaHelper
 
         copy($original_path, $thumb_path);
 
-        InterventionImage::make($thumb_path)->fit($thumb_size[0], $thumb_size[1])->save(null, 100);
+        if ( $keep_ratio ) {
+            InterventionImage::make($thumb_path)->resize($thumb_size[0], $thumb_size[1], function($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save(null, 100);
+        }
+        else {
+            InterventionImage::make($thumb_path)->fit($thumb_size[0], $thumb_size[1])->save(null, 100);
+        }
     }
 }
