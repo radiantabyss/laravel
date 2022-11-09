@@ -332,8 +332,16 @@ if ( !function_exists('add_ordinal_suffix') ) {
 
 if ( !function_exists('command_exists') ) {
     function command_exists($command) {
-        $windows = strpos(PHP_OS, 'WIN') === 0;
-        $test = $windows ? 'where' : 'command -v';
-        return is_executable(trim(shell_exec("$test $command")));
+        $is_windows = strpos(PHP_OS, 'WIN') === 0;
+        $response = shell_exec(($is_windows ? 'where ' : 'which ').$command);
+        if ( $is_windows && preg_match('/Could not find files for the given pattern/', $response) ) {
+            return false;
+        }
+
+        if ( !$is_windows && !$response ) {
+            return false;
+        }
+
+        return true;
     }
 }
