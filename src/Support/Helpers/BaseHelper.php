@@ -329,3 +329,11 @@ if ( !function_exists('add_ordinal_suffix') ) {
         }
     }
 }
+
+if ( !function_exists('command_exists') ) {
+    function command_exists($command) {
+        $windows = strpos(PHP_OS, 'WIN') === 0;
+        $test = $windows ? 'where' : 'command -v';
+        return is_executable(trim(shell_exec("$test $command")));
+    }
+}
