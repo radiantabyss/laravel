@@ -22,6 +22,10 @@ class Response
             $errors = [$errors];
         }
 
+        if ( env('SET_CORS_HEADER') ) {
+            header('Access-Control-Allow-Origin: *');
+        }
+
         return response()->json(['success' => false, 'errors' => $errors], $http_code);
     }
 }
