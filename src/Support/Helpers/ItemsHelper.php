@@ -2,10 +2,10 @@
 if ( !function_exists('findBy') ) {
     function findBy($items, $value, $key = 'id') {
         foreach ( $items as $item ) {
-            if ( is_object($item) && $item->$key == $value ) {
+            if ( is_object($item) && isset($item->$key) && $item->$key == $value ) {
                 return $item;
             }
-            else if ( !is_object($item) && $item[$key] == $value ) {
+            else if ( !is_object($item) && isset($item[$key]) && $item[$key] == $value ) {
                 return $item;
             }
         }
@@ -17,10 +17,19 @@ if ( !function_exists('findBy') ) {
 if ( !function_exists('groupBy') ) {
     function groupBy($items, $key = 'id') {
         $newItems = [];
-        foreach ($items as $item) {
-            if (is_object($item)) {
-                $newItems[$item->{$key}][] = $item;
-            } else {
+        foreach ( $items as $item ) {
+            if ( is_object($item) ) {
+                if ( !isset($item->$key) ) {
+                    continue;
+                }
+
+                $newItems[$item->$key][] = $item;
+            }
+            else {
+                if ( !isset($item[$key]) ) {
+                    continue;
+                }
+
                 $newItems[$item[$key]][] = $item;
             }
         }
@@ -31,10 +40,19 @@ if ( !function_exists('groupBy') ) {
 if ( !function_exists('keyBy') ) {
     function keyBy($items, $key = 'id') {
         $newItems = [];
-        foreach ($items as $item) {
-            if (is_object($item)) {
-                $newItems[$item->{$key}] = $item;
-            } else {
+        foreach ( $items as $item ) {
+            if ( is_object($item) ) {
+                if ( !isset($item->$key) ) {
+                    continue;
+                }
+
+                $newItems[$item->$key] = $item;
+            }
+            else {
+                if ( !isset($item[$key]) ) {
+                    continue;
+                }
+
                 $newItems[$item[$key]] = $item;
             }
         }
@@ -43,12 +61,21 @@ if ( !function_exists('keyBy') ) {
 }
 
 if ( !function_exists('pluck') ) {
-    function pluck($items, $key = 'id') {
+    function pluck($items, $key = 'id', $ignore_nulls = true) {
         $plucked = [];
-        foreach ($items as $item) {
-            if (is_object($item)) {
-                $plucked[] = $item->{$key};
-            } else {
+        foreach ( $items as $item ) {
+            if ( is_object($item) ) {
+                if ( !isset($item->$key) ) {
+                    continue;
+                }
+
+                $plucked[] = $item->$key;
+            }
+            else {
+                if ( !isset($item[$key]) ) {
+                    continue;
+                }
+
                 $plucked[] = $item[$key];
             }
         }
