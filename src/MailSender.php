@@ -10,6 +10,9 @@ class MailSender
             return;
         }
 
-        \Queue::push(new MailSenderJob($to, new $Mail($params)));
+        \Queue::push(new MailSenderJob([
+            'to' => $to,
+            'Mail' => new $Mail($params),
+        ]));
     }
 }
