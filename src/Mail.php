@@ -9,7 +9,7 @@ class Mail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $params;
+    protected $params;
 
     public function __construct($params) {
         $this->params = $params;
