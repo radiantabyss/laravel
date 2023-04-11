@@ -13,6 +13,10 @@ class Route extends LaravelRoute
         return parent::post($url, self::formatAction($action));
     }
 
+    public static function options($url, $action) {
+        return parent::options($url, self::formatAction($action));
+    }
+
     public static function any($url, $action) {
         return parent::any($url, self::formatAction($action));
     }
