@@ -19,7 +19,7 @@ class Route extends LaravelRoute
 
     private static function formatAction($action) {
         if ( !preg_match('/\\\\Actions/', $action) ) {
-            preg_match('/(\w+\\\\)\w+Action$/', $action, $match);
+            preg_match('/(\w+\\\\|)\w+Action$/', $action, $match);
             $action = str_replace($match[1], $match[1].'Actions\\', $action);
         }
 
