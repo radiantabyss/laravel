@@ -4,7 +4,7 @@ namespace RA\Core;
 class RouteCrud
 {
     public static function run($namespace) {
-        $prefix = \Str::kebab($namespace);
+        $prefix = str_replace('\-', '/', \Str::kebab($namespace));
 
         Route::get($prefix, $namespace.'\ListAction');
         Route::get($prefix.'/list', $namespace.'\ListAction');
