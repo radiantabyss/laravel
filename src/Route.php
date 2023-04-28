@@ -24,7 +24,11 @@ class Route extends LaravelRoute
     private static function formatAction($action) {
         if ( !preg_match('/\\\\Actions/', $action) ) {
             preg_match('/(\w+\\\\|)\w+Action$/', $action, $match);
-            $action = str_replace($match[1], $match[1].'Actions\\', $action);
+            $last_match_position = strrpos($action, $match[1]);
+
+            if ( $last_match_position !== false ) {
+                $action = substr_replace($action, $match[1].'Actions\\', $last_match_position, strlen($match[1]));
+            }
         }
 
         if ( !preg_match('/\@run/', $action) ) {
