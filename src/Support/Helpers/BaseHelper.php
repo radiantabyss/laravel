@@ -12,10 +12,10 @@ if ( !function_exists('dmp') ) {
 
         if ( $text2 !== null ) {
             echo $text.': ';
-            var_dump($text2);
+            var_export($text2);
         }
         else {
-            var_dump($text);
+            var_export($text);
         }
 
         if ( $pre ) {

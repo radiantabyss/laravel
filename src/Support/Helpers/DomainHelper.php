@@ -11,14 +11,13 @@ class DomainHelper
         $route = app('request')->route()->getAction();
         $action = trim(str_replace($route['namespace'], '', str_replace('@run', '', $route['controller'])), '\\');
         $domain = explode('\\', $action);
-        array_pop($domain);
-        array_splice($domain, 1, 2);
+        array_splice($domain, -2);
 
         foreach ( $domain as &$val ) {
-            $val = \Str::kebab($val);
+            $val = ucwords(str_replace('-', ' ', \Str::kebab($val)));
         }
 
-        return ($package ? $package.'::' : '').implode('/', $domain);
+        return ($package ? $package.'::' : '').implode(' ', $domain);
     }
 
     public function name($plural = false) {
