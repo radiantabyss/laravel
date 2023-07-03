@@ -93,7 +93,7 @@ trait Filter
             $orders = explode(',', $order);
 
             foreach ( $order_bys as $i => $order_by ) {
-                self::$query->orderBy($order_by, $orders[$i] ?? $orders[0]);
+                self::$query->orderBy(trim($order_by), trim($orders[$i] ?? $orders[0]));
             }
         }
         else if ( self::$has_default_order ) {
