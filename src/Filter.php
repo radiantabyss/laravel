@@ -84,12 +84,17 @@ trait Filter
             }
         }
 
-        self::order_by($filters['order_by'] ?? '', $filters['order'] ?? '');
+        self::order_by($filters['order_by'] ?? '', $filters['order'] ?? 'asc');
     }
 
     protected static function order_by($order_by, $order) {
         if ( $order_by ) {
-            self::$query->orderBy($order_by, $order);
+            $order_bys = explode(',', $order_by);
+            $orders = explode(',', $order);
+
+            foreach ( $order_bys as $i => $order_by ) {
+                self::$query->orderBy($order_by, $orders[$i] ?? $orders[0]);
+            }
         }
         else if ( self::$has_default_order ) {
             self::$query->orderBy('id', 'desc');
