@@ -48,6 +48,8 @@ trait Filter
                 continue;
             }
 
+            $operator = $operators[$key] ?? '';
+
             //check if a custom method is defined
             if ( method_exists(__CLASS__, $key) ) {
                 self::$key($value, $operator);
@@ -63,8 +65,6 @@ trait Filter
             }
 
             //apply where based on the operator
-            $operator = $operators[$key] ?? '';
-
             if ( $operator == 'is_empty' ) {
                 self::$query->where(function($query) use($column) {
                     $query->where($column, '=', '')
