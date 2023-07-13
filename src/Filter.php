@@ -1,19 +1,19 @@
 <?php
 namespace RA\Core;
 
-trait Filter
+class Filter
 {
     protected static $table;
     protected static $query;
 
     public static function apply($query, $filters = null) {
         //set table
-        if ( !self::$table ) {
-            self::$table = \Str::snake(\Domain::get());
+        if ( !static::$table ) {
+            static::$table = \Str::snake(\Domain::get());
         }
 
         //set query
-        self::$query = $query;
+        static::$query = $query;
 
         //get filters from request
         if ( $filters === null ) {
@@ -30,7 +30,7 @@ trait Filter
         }
 
         //set order
-        self::order_by($filters['order_by'] ?? '', $filters['order'] ?? 'asc');
+        static::order_by($filters['order_by'] ?? '', $filters['order'] ?? 'asc');
 
         foreach ($filters as $key => $value) {
             //ignore empty values
@@ -52,50 +52,50 @@ trait Filter
 
             //check if a custom method is defined
             if ( method_exists(__CLASS__, $key) ) {
-                self::$key($value, $operator);
+                static::$key($value, $operator);
                 continue;
             }
 
-            $column = self::$table.'.'.$key;
+            $column = static::$table.'.'.$key;
 
             //apply default where if no operator is specified
             if ( !isset($operators[$key]) ) {
-                self::$query->where($column, $value);
+                static::$query->where($column, $value);
                 continue;
             }
 
             //apply where based on the operator
             if ( $operator == 'is_empty' ) {
-                self::$query->where(function($query) use($column) {
+                static::$query->where(function($query) use($column) {
                     $query->where($column, '=', '')
                         ->orWhereNull($column);
                 });
             }
             else if ( $operator == 'is_not_empty' ) {
-                self::$query->where(function($query) use($column) {
+                static::$query->where(function($query) use($column) {
                     $query->whereNotNull($column)
                         ->where($column, '<>', '');
                 });
             }
             else if ( $operator == '!=' ) {
-                self::$query->where($column, '<>', $value);
+                static::$query->where($column, '<>', $value);
             }
             else if ( in_array($operator, ['>', '<']) ) {
-                self::$query->where($column, $operator, $value);
+                static::$query->where($column, $operator, $value);
             }
             else if ( $operator == 'in' ) {
                 $value = explode('|', $value);
-                self::$query->whereIn($column, $value);
+                static::$query->whereIn($column, $value);
             }
             else if ( $operator == 'not_in' ) {
                 $value = explode('|', $value);
-                self::$query->whereNotIn($column, $value);
+                static::$query->whereNotIn($column, $value);
             }
             else if ( $operator == 'contains' ) {
-                self::$query->where($column, 'LIKE', '%' . $value . '%');
+                static::$query->where($column, 'LIKE', '%' . $value . '%');
             }
             else if ( $operator == 'not_contains' ) {
-                self::$query->where($column, 'NOT LIKE', '%' . $value . '%');
+                static::$query->where($column, 'NOT LIKE', '%' . $value . '%');
             }
         }
     }
@@ -106,31 +106,31 @@ trait Filter
             $orders = explode(',', $order);
 
             foreach ( $order_bys as $i => $order_by ) {
-                self::$query->orderBy(trim($order_by), trim($orders[$i] ?? $orders[0]));
+                static::$query->orderBy(trim($order_by), trim($orders[$i] ?? $orders[0]));
             }
         }
         else {
-            self::$query->orderBy('id', 'desc');
+            static::$query->orderBy('id', 'desc');
         }
     }
 
     protected static function name($value) {
-        self::$query->where(self::$table.'.name', 'LIKE', '%' . $value . '%');
+        static::$query->where(static::$table.'.name', 'LIKE', '%' . $value . '%');
     }
 
     protected static function start_date($value) {
-        self::$query->where(self::$table.'.date', '>=', $value);
+        static::$query->where(static::$table.'.date', '>=', $value);
     }
 
     protected static function end_date($value) {
-        self::$query->where(self::$table.'.date', '<=', $value);
+        static::$query->where(static::$table.'.date', '<=', $value);
     }
 
     protected static function start_created_at($value) {
-        self::$query->where(self::$table.'.created_at', '>=', apply_reverse_timezone($value, auth()->user()->timezone));
+        static::$query->where(static::$table.'.created_at', '>=', apply_reverse_timezone($value, auth()->user()->timezone));
     }
 
     protected static function end_created_at($value) {
-        self::$query->where(self::$table.'.created_at', '<=', apply_reverse_timezone($value . ' 23:59:59', auth()->user()->timezone));
+        static::$query->where(static::$table.'.created_at', '<=', apply_reverse_timezone($value . ' 23:59:59', auth()->user()->timezone));
     }
 }
