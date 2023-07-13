@@ -51,10 +51,11 @@ class Filter
             $operator = $operators[$key] ?? '';
 
             //check if a custom method is defined
-            if ( method_exists(__CLASS__, $key) ) {
+            try {
                 static::$key($value, $operator);
                 continue;
             }
+            catch(\Error $e) {}
 
             $column = static::$table.'.'.$key;
 
