@@ -51,16 +51,9 @@ class DomainHelper
         }
 
         $view = $is_revision ? 'revision' : $this->action();
-        $domain = \Str::studly($this->get());
+        $domain = str_replace('\\', '.', \Str::studly($this->get()));
 
-        if ( $package ) {
-            $view = $package.'::'.$domain.'.'.$view;
-        }
-        else {
-            $view = 'AppDomains::'.$domain.'.views.'.$view;
-        }
-
-        return $view;
+        return $package ? $package.'::'.$domain.'.'.$view : 'AppDomains::'.$domain.'.views.'.$view;
     }
 
     public function viewsPath($package = '', $is_revision = false) {
@@ -69,15 +62,8 @@ class DomainHelper
             $package = '';
         }
 
-        $domain = \Str::studly($this->get());
+        $domain = str_replace('\\', '.', \Str::studly($this->get()));
 
-        if ( $package ) {
-            $path = $package.'::'.$domain;
-        }
-        else {
-            $path = 'AppDomains::'.$domain.'.views';
-        }
-
-        return $path;
+        return $package ? $package.'::'.$domain : 'AppDomains::'.$domain.'.views';
     }
 }
