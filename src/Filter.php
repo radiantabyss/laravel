@@ -134,4 +134,6 @@ class Filter
     protected static function end_created_at($value) {
         static::$query->where(static::$table.'.created_at', '<=', apply_reverse_timezone($value . ' 23:59:59', auth()->user()->timezone));
     }
+
+    protected static function _() {}
 }
