@@ -102,7 +102,7 @@ if ( !function_exists('get_first_last_name') ) {
 
 if ( !function_exists('log_db') ) {
     function log_db($message, $type = '') {
-        \RA\Core\Models\Log::create(compact('message', 'type'));
+        \Lumi\Core\Models\Log::create(compact('message', 'type'));
     }
 }
 
@@ -120,8 +120,8 @@ if ( !function_exists('get_query_log') ) {
 
 if ( !function_exists('get_blocks_data_html') ) {
     function get_blocks_data_html($folder, $blocks_data) {
-        \RA\Core\Core\BuilderAdmin::initialize(str_replace('.', '/', $folder).'/partials/blocks');
-        return \RA\Core\Core\BuilderAdmin::writeBlocks($blocks_data, true);
+        \Lumi\Core\Core\BuilderAdmin::initialize(str_replace('.', '/', $folder).'/partials/blocks');
+        return \Lumi\Core\Core\BuilderAdmin::writeBlocks($blocks_data, true);
     }
 }
 
@@ -254,7 +254,7 @@ if ( !function_exists('get_files_recursive') ) {
         $files = array_diff(scandir($directory), ['.', '..']);
 
         foreach ($files as $file) {
-            $fullPath = $directory. DIRECTORY_SEPARATOR .$file;
+            $fullPath = $directory. DIRECTORY_SEPALumiTOR .$file;
 
             if( is_dir($fullPath) ) {
                 $allFiles += get_files_recursive($fullPath, $allFiles);

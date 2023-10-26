@@ -1,15 +1,15 @@
 {
-    "name": "radiantabyss/packages-core",
-    "description": "RadiantAbyss Package: Core",
+    "name": "radiantabyss/lumi-laravel-core",
+    "description": "Lumi Laravel Core",
     "keywords": [
         "ra"
     ],
-    "homepage": "https://packages.radiantabyss.com/core",
+    "homepage": "https://lumi.radiantabyss.com/laravel-core",
     "license": "proprietary",
     "type": "library",
     "authors": [
         {
-            "name": "RA",
+            "name": "Robert",
             "email": "robert@radiantabyss.com",
             "role": "owner"
         }
@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "RA\\Core\\": "src"
+            "Lumi\\Core\\": "src"
         },
         "files": [
             "src/Support/Helpers/BaseHelper.php",
@@ -29,7 +29,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "RA\\Core\\Tests\\": "tests"
+            "Lumi\\Core\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -42,7 +42,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "RA\\Core\\CoreServiceProvider"
+                "Lumi\\Core\\CoreServiceProvider"
             ]
         }
     }

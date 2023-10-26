@@ -1,5 +1,5 @@
 <?php
-namespace RA\Core\Models;
+namespace Lumi\Core\Models;
 
 class Log extends Model
 {

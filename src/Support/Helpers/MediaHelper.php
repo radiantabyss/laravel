@@ -1,5 +1,5 @@
 <?php
-namespace RA\Core\Support\Helpers;
+namespace Lumi\Core\Support\Helpers;
 
 use Intervention\Image\ImageManagerStatic as InterventionImage;
 

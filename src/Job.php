@@ -1,5 +1,5 @@
 <?php
-namespace RA\Core;
+namespace Lumi\Core;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;

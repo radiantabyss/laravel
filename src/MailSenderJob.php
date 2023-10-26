@@ -1,5 +1,5 @@
 <?php
-namespace RA\Core;
+namespace Lumi\Core;
 
 class MailSenderJob extends Job
 {
