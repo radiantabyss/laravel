@@ -12,10 +12,10 @@ if ( !function_exists('dmp') ) {
 
         if ( $text2 !== null ) {
             echo $text.': ';
-            var_export($text2);
+            var_dump($text2);
         }
         else {
-            var_export($text);
+            var_dump($text);
         }
 
         if ( $pre ) {
@@ -113,8 +113,39 @@ if ( !function_exists('start_query_log') ) {
 }
 
 if ( !function_exists('get_query_log') ) {
-    function get_query_log() {
-        dmp(\DB::getQueryLog());
+    function get_query_log($full_log = false) {
+        $query_logs = \DB::getQueryLog();
+
+        foreach ( $query_logs as &$query_log ) {
+            $query = $query_log['query'];
+            foreach ( $query_log['bindings'] as $binding ) {
+                if ( is_bool($binding) ) {
+                    $binding = $binding ? 1 : 0;
+                }
+                else if ( !is_numeric($binding) ) {
+                    $binding = '"'.$binding.'"';
+                }
+
+                $query = preg_replace('/\?/', $binding, $query, 1);
+            }
+
+            if ( $full_log ) {
+                $query_log['full_query'] = $query;
+            }
+            else {
+                $query_log['full_query'] = [
+                    'query' => $query,
+                    'time' => $query_log['time'],
+                ];
+            }
+        }
+
+        if ( $full_log ) {
+            dmp($query_logs);
+        }
+        else {
+            dmp(pluck($query_logs, 'full_query'));
+        }
     }
 }
 
@@ -343,5 +374,36 @@ if ( !function_exists('command_exists') ) {
         }
 
         return true;
+    }
+}
+
+if ( !function_exists('sort_array_by_array') ) {
+    function sort_array_by_array(array $array_to_sort, array $order_array) {
+        // Create a copy of the order_array with values as keys
+        $order = array_flip($order_array);
+
+        // Sort the array_to_sort according to the order_array
+        usort($array_to_sort, function($a, $b) use ($order) {
+            $pos_a = isset($order[$a]) ? $order[$a] : null;
+            $pos_b = isset($order[$b]) ? $order[$b] : null;
+
+            if ($pos_a === null && $pos_b === null) {
+                // both items are not in the order array, keep their relative position
+                return 0;
+            }
+            if ($pos_a === null) {
+                // $a is not in the order array, move it down
+                return 1;
+            }
+            if ($pos_b === null) {
+                // $b is not in the order array, move it up
+                return -1;
+            }
+
+            // Both items are in the order array, sort normally
+            return $pos_a - $pos_b;
+        });
+
+        return $array_to_sort;
     }
 }

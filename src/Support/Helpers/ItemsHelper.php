@@ -80,7 +80,7 @@ if ( !function_exists('pluck') ) {
             }
         }
 
-        return $plucked;
+        return array_unique($plucked);
     }
 }
 
