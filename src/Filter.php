@@ -5,8 +5,9 @@ class Filter
 {
     protected static $table;
     protected static $query;
+    protected static $is_count;
 
-    public static function apply($query, $filters = null) {
+    public static function apply($query, $filters = null, $is_count = false) {
         //set table
         if ( !static::$table ) {
             static::$table = \Str::snake(\Domain::get());
@@ -14,6 +15,9 @@ class Filter
 
         //set query
         static::$query = $query;
+
+        //set is count
+        static::$is_count = $is_count;
 
         //get filters from request
         if ( $filters === null ) {
@@ -102,11 +106,22 @@ class Filter
     }
 
     protected static function order_by($order_by, $order) {
+        if ( static::$is_count ) {
+            return;
+        }
+
         if ( $order_by ) {
             $order_bys = explode(',', $order_by);
             $orders = explode(',', $order);
 
             foreach ( $order_bys as $i => $order_by ) {
+                //check if a custom method is defined
+                try {
+                    static::{'order_by_'.$order_by}(trim($orders[$i] ?? $orders[0]));
+                    continue;
+                }
+                catch(\Error $e) {}
+
                 static::$query->orderBy(trim($order_by), trim($orders[$i] ?? $orders[0]));
             }
         }
