@@ -285,7 +285,7 @@ if ( !function_exists('get_files_recursive') ) {
         $files = array_diff(scandir($directory), ['.', '..']);
 
         foreach ($files as $file) {
-            $fullPath = $directory. DIRECTORY_SEPALumiTOR .$file;
+            $fullPath = $directory. DIRECTORY_SEPARATOR .$file;
 
             if( is_dir($fullPath) ) {
                 $allFiles += get_files_recursive($fullPath, $allFiles);
