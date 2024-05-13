@@ -21,7 +21,7 @@ class CoreServiceProvider extends ServiceProvider
 
         //migrations
         $this->publishes([
-            __DIR__.'/../database/migrations' => base_path('database/migrations'),
+            __DIR__.'/../database/migrations' => base_path('database/migrations/lumi-core'),
         ], 'lumi-core:migrations');
     }
 }
