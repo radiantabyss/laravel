@@ -111,4 +111,121 @@ class DateHelper
 
         return $timezones;
     }
+
+    public function range($start, $end) {
+        $dates = [];
+        $start = new \DateTime($start);
+        $end = new \DateTime($end);
+        $end = $end->modify('+1 day'); // Include end date
+
+        $interval = new \DateInterval('P1D');
+        $dateRange = new \DatePeriod($start, $interval, $end);
+
+        foreach ( $dateRange as $date ) {
+            $dates[] = $date->format('Y-m-d');
+        }
+
+        return $dates;
+    }
+
+    public function isInRange($date, $start, $end = false) {
+        if ( is_string($start) ) {
+            if ( !$end ) {
+                throw 'End date is required.';
+            }
+
+            return $date >= $start && $date <= $end;
+        }
+
+        return $date >= $start[0] && $date <= $start[count($start) - 1];
+    }
+
+    public function parseWindow($window) {
+        $timezone = '';
+        $months_short = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+        $months_long = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+        //today
+        if ( $window == 'today' ) {
+            $start = $end = date('Y-m-d');
+        }
+        //yesterday
+        else if ( $window == 'yesterday' ) {
+            $start = $end = date('Y-m-d', strtotime('yesterday'));
+        }
+        //x_days_ago
+        else if ( preg_match('/_days_ago/', $window) ) {
+            $days = str_replace('_days_ago', '', $window);
+            $start = date('Y-m-d', strtotime('-'.$days.' days'));
+            $end = date('Y-m-d', strtotime('-'.$days.' days'));
+        }
+        //last_x_hours
+        else if ( preg_match('/last_/', $window) && preg_match('/_hours/', $window) ) {
+            $amount = str_replace('last_', '', str_replace('_hours', '', $window));
+            $start = date('Y-m-d H:i:s', strtotime('-'.$amount.' hours'));
+            $end = date('Y-m-d H:i:s');
+        }
+        //last_x_days
+        else if ( preg_match('/last_/', $window) && preg_match('/_days/', $window) ) {
+            $amount = str_replace('last_', '', str_replace('_days', '', $window));
+            $start = date('Y-m-d', strtotime('-'.$amount.' days'));
+            $end = date('Y-m-d');
+        }
+        //current_month
+        else if ( $window == 'current_month' ) {
+            $start = date('Y-m-01');
+            $end = date('Y-m-d');
+        }
+        //last_month
+        else if ( $window == 'last_month' ) {
+            $start = date('Y-m-01', strtotime('-1 month'));
+            $end = date('Y-m-t', strtotime('-1 month'));
+        }
+        //x_months_ago
+        else if ( preg_match('/_months_ago/', $window) ) {
+            $months = str_replace('_months_ago', '', $window);
+            $start = date('Y-m-01', strtotime('-'.$months.' months'));
+            $end = date('Y-m-t', strtotime('-'.$months.' months'));
+        }
+        //month or month long or month + year
+        else if ( in_array(strtolower($window), $months_short)
+            || in_array(strtolower($window), $months_long)
+            || preg_match('/\w+ \d{4}/', $window)
+        ) {
+            $start = date('Y-m-d', strtotime('first day of '.$window));
+            $end = date('Y-m-d', strtotime('last day of '.$window));
+        }
+        //year
+        else if ( preg_match('/^\d{4}$/', $window) ) {
+            $start = $window.'-01-01';
+            $end = $window.'-12-31';
+        }
+        //month
+        else if ( preg_match('/^\d{4}-\d{2}$/', $window) ) {
+            $exp = explode('-', $window);
+            $start = $window.'-01';
+            $end = $window.'-'.cal_days_in_month(CAL_GREGORIAN, $exp[1], $exp[0]);
+        }
+        //date
+        else if ( preg_match('/^\d{4}-\d{2}-\d{2}$/', $window) ) {
+            $start = date('Y-m-d', strtotime($window));
+            $end = date('Y-m-d', strtotime($window));
+        }
+        //date:date (date interval)
+        else if ( preg_match('/\:/', $window) ) {
+            $exp = explode(':', $window);
+            $start = date('Y-m-d', strtotime($exp[0]));
+            $end = date('Y-m-d', strtotime($exp[1]));
+        }
+        //lifetime
+        else if ( $window == 'lifetime' || $window == 'none' ) {
+            return null;
+        }
+
+        return compact('start', 'end');
+    }
+
+    public function fromYearMonth($year, $month) {
+        return $year.'-'.$month.'-'.cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    }
 }

@@ -15,7 +15,12 @@ if ( !function_exists('dmp') ) {
             var_dump($text2);
         }
         else {
-            var_dump($text);
+            if ( gettype($text) == 'object' && get_class($text) == 'Illuminate\Database\Eloquent\Collection' ) {
+                var_dump(toArray($text));
+            }
+            else {
+                var_dump($text);
+            }
         }
 
         if ( $pre ) {

@@ -150,5 +150,6 @@ class Filter
         static::$query->where(static::$table.'.created_at', '<=', apply_reverse_timezone($value . ' 23:59:59', auth()->user()->timezone));
     }
 
-    protected static function _() {}
+    protected static function _($value) {}
+    protected static function limit($value) {}
 }
