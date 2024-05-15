@@ -105,6 +105,10 @@ class Filter
         }
     }
 
+    public static function setTable($table) {
+        static::$table = $table;
+    }
+
     protected static function order_by($order_by, $order) {
         if ( static::$is_count ) {
             return;
