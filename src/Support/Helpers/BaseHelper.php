@@ -370,6 +370,11 @@ if ( !function_exists('command_exists') ) {
     function command_exists($command) {
         $is_windows = strpos(PHP_OS, 'WIN') === 0;
         $response = shell_exec(($is_windows ? 'where ' : 'which ').$command);
+        
+        if ( $response === null ) {
+            return false;
+        }
+
         if ( $is_windows && preg_match('/Could not find files for the given pattern/', $response) ) {
             return false;
         }
