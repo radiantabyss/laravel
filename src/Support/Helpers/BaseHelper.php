@@ -226,7 +226,7 @@ if ( !function_exists('random_string') ) {
 if ( !function_exists('delete_recursive') ) {
     function delete_recursive($directory) {
         foreach(glob("{$directory}/*") as $file) {
-            if ( is_dir($file) ) {
+            if ( is_dir($file) && !is_link($file) ) {
                 delete_recursive($file);
             }
             else {
@@ -370,7 +370,7 @@ if ( !function_exists('command_exists') ) {
     function command_exists($command) {
         $is_windows = strpos(PHP_OS, 'WIN') === 0;
         $response = shell_exec(($is_windows ? 'where ' : 'which ').$command);
-        
+
         if ( $response === null ) {
             return false;
         }
