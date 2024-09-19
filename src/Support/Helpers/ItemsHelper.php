@@ -80,6 +80,10 @@ if ( !function_exists('pluck') ) {
             }
         }
 
+        if ( isset($plucked[0]) && is_array($plucked[0]) ) {
+            return $plucked;
+        }
+
         return array_unique($plucked);
     }
 }
