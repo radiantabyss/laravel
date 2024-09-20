@@ -140,52 +140,79 @@ class DateHelper
         return $date >= $start[0] && $date <= $start[count($start) - 1];
     }
 
-    public function parseWindow($window) {
-        $timezone = '';
+    public function parseWindow($window, $run_start_time = null) {
+        $run_start_time = $run_start_time ?: date('Y-m-d H:i:s');
         $months_short = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
         $months_long = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
+        //last_x_hours
+        if ( preg_match('/last_\d+_hours/', $window) ) {
+            $window_value = explode('_', $window)[1];
+            $start = date('Y-m-d H', strtotime($run_start_time.' -'.$window_value.' hours'));
+            $end = date('Y-m-d H', strtotime($run_start_time));
+        }
+        //x_to_y_hours_ago
+        else if ( preg_match('/_to_/', $window) && preg_match('/_hours_ago/', $window) ) {
+            $window_value = explode('_', $window)[0];
+            $window_value_2 = explode('_', $window)[2];
+
+            if ( $window_value < $window_value_2 ) {
+                $temp = $window_value;
+                $window_value = $window_value_2;
+                $window_value_2 = $temp;
+            }
+
+            $start = date('Y-m-d H', strtotime($run_start_time.' -'.$window_value.' hours'));
+            $end = date('Y-m-d H', strtotime($run_start_time.' -'.$window_value_2.' hours'));
+        }
         //today
-        if ( $window == 'today' ) {
-            $start = $end = date('Y-m-d');
+        else if ( $window == 'today' ) {
+            $start = $end = date('Y-m-d', strtotime($run_start_time));
         }
         //yesterday
         else if ( $window == 'yesterday' ) {
-            $start = $end = date('Y-m-d', strtotime('yesterday'));
+            $start = $end = date('Y-m-d', strtotime($run_start_time.' -1 day'));
         }
         //x_days_ago
         else if ( preg_match('/_days_ago/', $window) ) {
-            $days = str_replace('_days_ago', '', $window);
-            $start = date('Y-m-d', strtotime('-'.$days.' days'));
-            $end = date('Y-m-d', strtotime('-'.$days.' days'));
-        }
-        //last_x_hours
-        else if ( preg_match('/last_/', $window) && preg_match('/_hours/', $window) ) {
-            $amount = str_replace('last_', '', str_replace('_hours', '', $window));
-            $start = date('Y-m-d H:i:s', strtotime('-'.$amount.' hours'));
-            $end = date('Y-m-d H:i:s');
+            $window_value = str_replace('_days_ago', '', $window);
+            $start = $end = date('Y-m-d', strtotime($run_start_time.' -'.$window_value.' days'));
         }
         //last_x_days
-        else if ( preg_match('/last_/', $window) && preg_match('/_days/', $window) ) {
-            $amount = str_replace('last_', '', str_replace('_days', '', $window));
-            $start = date('Y-m-d', strtotime('-'.$amount.' days'));
-            $end = date('Y-m-d');
+        else if ( preg_match('/last_\d+_days/', $window) ) {
+            $window_value = str_replace('last_', '', str_replace('_days', '', $window));
+            $start_date = date('Y-m-d', strtotime($run_start_time.' -'.$window_value.' days'));
+            $end_date = date('Y-m-d', strtotime($run_start_time));
+        }
+        //x_to_y_days_ago
+        else if ( preg_match('/\d+_to_\d+_days_ago/', $window) ) {
+            $window_value = explode('_', $window)[0];
+            $window_value_2 = explode('_', $window)[2];
+
+            if ( $window_value < $window_value_2 ) {
+                $temp = $window_value;
+                $window_value = $window_value_2;
+                $window_value_2 = $temp;
+            }
+
+            $start_date = date('Y-m-d', strtotime($run_start_time.' -'.$window_value.' days'));
+            $end_date = date('Y-m-d', strtotime($run_start_time.' -'.$window_value_2.' days'));
         }
         //current_month
         else if ( $window == 'current_month' ) {
-            $start = date('Y-m-01');
-            $end = date('Y-m-d');
+            $start = date('Y-m-01', strtotime($run_start_time));
+            $end = date('Y-m-d', strtotime($run_start_time));
         }
         //last_month
         else if ( $window == 'last_month' ) {
-            $start = date('Y-m-01', strtotime('-1 month'));
-            $end = date('Y-m-t', strtotime('-1 month'));
+            $start_date = date('Y-m-01', strtotime($run_start_time. ' first day of last month'));
+            $end_date = date('Y-m-t', strtotime($run_start_time. ' last day of last month'));
         }
         //x_months_ago
         else if ( preg_match('/_months_ago/', $window) ) {
-            $months = str_replace('_months_ago', '', $window);
-            $start = date('Y-m-01', strtotime('-'.$months.' months'));
-            $end = date('Y-m-t', strtotime('-'.$months.' months'));
+            $window_value = explode('_', $window)[0];
+            $start = date('Y-m-01', strtotime($run_start_time.' -'.$window_value.' months'));
+            $end = date('Y-m-t', strtotime($run_start_time.' -'.$window_value.' months'));
         }
         //month or month long or month + year
         else if ( in_array(strtolower($window), $months_short)
@@ -200,7 +227,7 @@ class DateHelper
             $start = $window.'-01-01';
             $end = $window.'-12-31';
         }
-        //month
+        //year-month
         else if ( preg_match('/^\d{4}-\d{2}$/', $window) ) {
             $exp = explode('-', $window);
             $start = $window.'-01';
