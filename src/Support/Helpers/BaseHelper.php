@@ -342,7 +342,7 @@ if ( !function_exists('start_load_time') ) {
 }
 
 if ( !function_exists('get_load_time') ) {
-    function get_load_time($total = false) {
+    function get_load_time($total = false, $return = false) {
         $time = microtime();
         $time = explode(' ', $time);
         $time = $time[1] + $time[0];
@@ -354,7 +354,13 @@ if ( !function_exists('get_load_time') ) {
 
         $GLOBALS['load_times'][] = $time;
 
-        echo ($total ? array_sum($GLOBALS['load_times']) : $time)."\n";
+        $total_time = ($total ? array_sum($GLOBALS['load_times']) : $time);
+
+        if ( $return ) {
+            return $total_time;
+        }
+
+        echo $total_time."\n";
     }
 }
 
