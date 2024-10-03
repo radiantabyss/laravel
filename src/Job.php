@@ -30,7 +30,7 @@ class Job implements ShouldQueue
             $max_jobs_count = config('lumi-core.max_jobs_per_process:'.$this->job->getQueue()) ?? config('lumi-core.max_jobs_per_process');
 
             if ( $GLOBALS['__jobs_count'] == $max_jobs_count ) {
-                \DB::table('jobs')->where('id', $this->getJobId())->delete();
+                \DB::table('jobs')->where('id', $this->job->getJobId())->delete();
                 die();
             }
         }
