@@ -26,6 +26,8 @@ class Response
             header('Access-Control-Allow-Origin: *');
         }
 
+        $errors = array_unique($errors);
+
         return response()->json(['success' => false, 'errors' => $errors], $http_code);
     }
 }
