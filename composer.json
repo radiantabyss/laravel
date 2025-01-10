@@ -23,7 +23,7 @@
             "Lumi\\Core\\": "src"
         },
         "files": [
-            "src/Support/Helpers/BaseHelper.php",
+            "src/Support/Helpers/Helper.php",
             "src/Support/Helpers/ItemsHelper.php"
         ]
     },
