@@ -1,5 +1,5 @@
 <?php
-namespace Lumi\Core;
+namespace RA;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -18,7 +18,7 @@ class Job implements ShouldQueue
     }
 
     public function handle() {
-        if ( config('lumi-core.enable_job_process_restart') && !isset($GLOBALS['__jobs_count']) ) {
+        if ( config('ra.enable_job_process_restart') && !isset($GLOBALS['__jobs_count']) ) {
             $GLOBALS['__jobs_start_time'] = time();
             $GLOBALS['__jobs_count'] = 0;
         }
@@ -26,11 +26,11 @@ class Job implements ShouldQueue
         $this->run();
 
         //restart process after 30 jobs
-        if ( config('lumi-core.enable_job_process_restart') ) {
+        if ( config('ra.enable_job_process_restart') ) {
             $GLOBALS['__jobs_count']++;
-            $max_jobs_count = config('lumi-core.max_jobs_per_process:'.$this->job->getQueue()) ?? config('lumi-core.max_jobs_per_process');
+            $max_jobs_count = config('ra.max_jobs_per_process:'.$this->job->getQueue()) ?? config('ra.max_jobs_per_process');
 
-            //check if max jobs count was reached and the process has been running for at least 5 seconds
+            //check if max jobs count was reached and the process has been running for at least 30 seconds
             if ( $GLOBALS['__jobs_count'] >= $max_jobs_count && (time() - $GLOBALS['__jobs_start_time']) > 30 ) {
                 $job_id = $this->job->getJobId();
 

@@ -1,5 +1,5 @@
 <?php
-namespace Lumi\Core;
+namespace RA;
 
 use Illuminate\Support\Facades\Route as LaravelRoute;
 

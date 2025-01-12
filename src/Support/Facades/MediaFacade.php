@@ -1,9 +1,9 @@
 <?php
-namespace Lumi\Core\Support\Facades;
+namespace RA\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 class MediaFacade extends Facade
 {
-    protected static function getFacadeAccessor() { return '\Lumi\Core\Support\Helpers\MediaHelper'; }
+    protected static function getFacadeAccessor() { return '\RA\Support\Helpers\MediaHelper'; }
 }

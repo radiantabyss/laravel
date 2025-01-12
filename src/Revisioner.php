@@ -1,7 +1,7 @@
 <?php
-namespace Lumi\Core;
+namespace RA;
 
-use Lumi\Core\Models\Revision as Model;
+use RA\Models\Revision as Model;
 
 class Revisioner
 {

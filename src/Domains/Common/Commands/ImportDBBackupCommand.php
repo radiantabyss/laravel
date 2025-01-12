@@ -5,7 +5,7 @@ use Illuminate\Console\Command;
 
 class ImportDBBackupCommand extends Command
 {
-    protected $signature = 'lumi-core:import-db-backup';
+    protected $signature = 'ra:import-db-backup';
     protected $description = 'Imports the latest db backup zip archive from /storage/db-backups (not from subfolders)';
 
     public function handle() {

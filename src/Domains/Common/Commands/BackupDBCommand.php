@@ -5,7 +5,7 @@ use Illuminate\Console\Command;
 
 class BackupDBCommand extends Command
 {
-    protected $signature = 'lumi-core:backup-db {frequency}';
+    protected $signature = 'ra:backup-db {frequency}';
     protected $description = 'Makes backups of the database. Don\'t forget to set up "mysql_config_editor set --login-path=local --host=localhost --user=username --password"';
 
     public function handle() {

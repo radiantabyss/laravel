@@ -1,5 +1,5 @@
 <?php
-namespace Lumi\Core;
+namespace RA;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

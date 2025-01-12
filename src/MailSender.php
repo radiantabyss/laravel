@@ -1,7 +1,7 @@
 <?php
-namespace Lumi\Core;
+namespace RA;
 
-use Lumi\Core\MailSenderJob;
+use RA\MailSenderJob;
 
 class MailSender
 {

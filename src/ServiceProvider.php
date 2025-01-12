@@ -1,9 +1,9 @@
 <?php
-namespace Lumi\Core;
+namespace RA;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 
-class CoreServiceProvider extends ServiceProvider
+class ServiceProvider extends LaravelServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -20,7 +20,7 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
         //load configs
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'lumi-core');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'ra');
     }
 
     private function enablePublishing() {
@@ -30,12 +30,12 @@ class CoreServiceProvider extends ServiceProvider
 
         //config
         $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('lumi-core.php'),
-        ], 'lumi-core:config');
+            __DIR__.'/../config/config.php' => config_path('ra.php'),
+        ], 'ra:config');
 
         //migrations
         $this->publishes([
-            __DIR__.'/../database/migrations' => base_path('database/migrations/lumi-core'),
-        ], 'lumi-core:migrations');
+            __DIR__.'/../database/migrations' => base_path('database/migrations/ra'),
+        ], 'ra:migrations');
     }
 }

@@ -5,7 +5,7 @@ use Illuminate\Console\Command;
 
 class CleanDBBackupsCommand extends Command
 {
-    protected $signature = 'lumi-core:clean-db-backups';
+    protected $signature = 'ra:clean-db-backups';
     protected $description = 'Deletes old backups';
 
     public function handle() {

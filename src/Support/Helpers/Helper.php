@@ -107,7 +107,7 @@ if ( !function_exists('get_first_last_name') ) {
 
 if ( !function_exists('log_db') ) {
     function log_db($message, $type = '') {
-        \Lumi\Core\Models\Log::create(compact('message', 'type'));
+        \RA\Models\Log::create(compact('message', 'type'));
     }
 }
 
@@ -156,8 +156,8 @@ if ( !function_exists('get_query_log') ) {
 
 if ( !function_exists('get_blocks_data_html') ) {
     function get_blocks_data_html($folder, $blocks_data) {
-        \Lumi\Core\Core\BuilderAdmin::initialize(str_replace('.', '/', $folder).'/partials/blocks');
-        return \Lumi\Core\Core\BuilderAdmin::writeBlocks($blocks_data, true);
+        \RA\Core\BuilderAdmin::initialize(str_replace('.', '/', $folder).'/partials/blocks');
+        return \RA\Core\BuilderAdmin::writeBlocks($blocks_data, true);
     }
 }
 

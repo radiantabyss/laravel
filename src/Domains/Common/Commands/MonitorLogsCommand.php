@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 //every 5 minutes
 class MonitorLogsCommand extends Command
 {
-    protected $signature = 'lumi-core:monitor-logs';
+    protected $signature = 'ra:monitor-logs';
     protected $description = 'Checks if has been a change in the logs.';
 
     public function handle()

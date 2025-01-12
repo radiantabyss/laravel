@@ -1,5 +1,5 @@
 <?php
-namespace Lumi\Core\Models;
+namespace RA\Models;
 
 use Illuminate\Database\Eloquent\Model as LaravelModel;
 

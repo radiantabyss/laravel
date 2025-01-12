@@ -1,5 +1,5 @@
 <?php
-namespace Lumi\Core\Support\Helpers;
+namespace RA\Support\Helpers;
 
 class TableHelper
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Lumi\Core\Models;
+namespace RA\Models;
 
 class Revision extends Model
 {
