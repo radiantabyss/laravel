@@ -14,7 +14,6 @@ class RouteCrud
         Route::post($prefix.'/patch/{id}', $namespace.'\PatchAction');
         Route::get($prefix.'/delete/{id}', $namespace.'\DeleteAction');
         Route::get($prefix.'/search', $namespace.'\SearchAction');
-        Route::get($prefix.'/duplicate/{id}', $namespace.'\DeleteAction');
         Route::get($prefix.'/sort', $namespace.'\SortAction');
         Route::get($prefix.'/sort-paginated', $namespace.'\SortPaginatedAction');
     }
