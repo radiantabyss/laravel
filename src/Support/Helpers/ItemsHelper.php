@@ -61,7 +61,7 @@ if ( !function_exists('keyBy') ) {
 }
 
 if ( !function_exists('pluck') ) {
-    function pluck($items, $key = 'id', $ignore_nulls = true) {
+    function pluck($items, $key = 'id') {
         $plucked = [];
         foreach ( $items as $item ) {
             if ( is_object($item) ) {
@@ -84,7 +84,7 @@ if ( !function_exists('pluck') ) {
             return $plucked;
         }
 
-        return array_unique($plucked);
+        return $plucked;
     }
 }
 

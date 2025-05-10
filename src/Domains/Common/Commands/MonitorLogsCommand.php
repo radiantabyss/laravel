@@ -1,5 +1,5 @@
 <?php
-namespace App\Domains\Common\Commands;
+namespace RA\Domains\Common\Commands;
 
 use Illuminate\Console\Command;
 
@@ -35,6 +35,10 @@ class MonitorLogsCommand extends Command
 
             //for older logs notify daily at 10 am
             if ( date('H:i') != '10:00' ) {
+                return;
+            }
+
+            if ( date('N') > 5 ) {
                 return;
             }
         }

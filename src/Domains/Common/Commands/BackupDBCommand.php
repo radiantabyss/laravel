@@ -1,5 +1,5 @@
 <?php
-namespace App\Domains\Common\Commands;
+namespace RA\Domains\Common\Commands;
 
 use Illuminate\Console\Command;
 

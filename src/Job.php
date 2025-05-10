@@ -13,7 +13,7 @@ class Job implements ShouldQueue
 
     protected $params;
 
-    public function __construct($params) {
+    public function __construct($params = null) {
         $this->params = $params;
     }
 
@@ -32,14 +32,22 @@ class Job implements ShouldQueue
 
             //check if max jobs count was reached and the process has been running for at least 30 seconds
             if ( $GLOBALS['__jobs_count'] >= $max_jobs_count && (time() - $GLOBALS['__jobs_start_time']) > 30 ) {
-                $job_id = $this->job->getJobId();
-
-                if ( $job_id ) {
+                if ( $this->job->getJobId() ) {
                     \DB::table('jobs')->where('id', $this->job->getJobId())->delete();
                 }
 
                 die();
             }
+        }
+
+        //restart process if code version has been changed
+        $env = include(base_path().'/env.php');
+        if ( $env['JOB_WORKER_VERSION'] != $_ENV['JOB_WORKER_VERSION'] ) {
+            if ( $this->job->getJobId() ) {
+                \DB::table('jobs')->where('id', $this->job->getJobId())->delete();
+            }
+
+            die();
         }
     }
 }

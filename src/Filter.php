@@ -43,7 +43,7 @@ class Filter
             }
 
             //ignore reserved keys
-            if ( in_array($key, ['order', 'order_by', 'page', 'per_page']) ) {
+            if ( in_array($key, ['order', 'order_by', 'page', 'per_page', 'tab']) ) {
                 continue;
             }
 
