@@ -130,7 +130,7 @@ class Filter
             }
         }
         else {
-            static::$query->orderBy('id', 'desc');
+            static::$query->orderBy(static::$table.'.id', 'desc');
         }
     }
 
