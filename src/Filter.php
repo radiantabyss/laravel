@@ -37,11 +37,6 @@ class Filter
         static::order_by($filters['order_by'] ?? '', $filters['order'] ?? 'asc');
 
         foreach ($filters as $key => $value) {
-            //ignore empty values
-            if ( ($value === '' || $value === null) ) {
-                continue;
-            }
-
             //ignore reserved keys
             if ( in_array($key, ['order', 'order_by', 'page', 'per_page', 'tab']) ) {
                 continue;
@@ -60,6 +55,11 @@ class Filter
                 continue;
             }
             catch(\Error $e) {}
+
+            //ignore empty values
+            if ( ($value === '' || $value === null) ) {
+                continue;
+            }
 
             $column = static::$table.'.'.$key;
 
