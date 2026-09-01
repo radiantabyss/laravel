@@ -2,6 +2,7 @@
 namespace RA\Domains\Common\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 
 //every 5 minutes
 class MonitorLogsCommand extends Command
