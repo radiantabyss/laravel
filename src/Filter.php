@@ -118,7 +118,12 @@ class Filter
             $order_bys = explode(',', $order_by);
             $orders = explode(',', $order);
 
+            $has_id = false;
             foreach ( $order_bys as $i => $order_by ) {
+                if ( in_array(trim($order_by), ['id', static::$table.'.id']) ) {
+                    $has_id = true;
+                }
+
                 //check if a custom method is defined
                 try {
                     static::{'order_by_'.$order_by}(trim($orders[$i] ?? $orders[0]));
@@ -127,6 +132,11 @@ class Filter
                 catch(\Error $e) {}
 
                 static::$query->orderBy(trim($order_by), trim($orders[$i] ?? $orders[0]));
+            }
+
+            //break ties on a unique column so pagination is deterministic
+            if ( !$has_id ) {
+                static::$query->orderBy(static::$table.'.id', trim($orders[0]));
             }
         }
         else {
