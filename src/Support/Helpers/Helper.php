@@ -40,7 +40,8 @@ function is_assoc($arr) {
 }
 
 function is_me() {
-    return file_get_contents(base_path()."/ip.txt") == $_SERVER["REMOTE_ADDR"] || $_SERVER["REMOTE_ADDR"] == '127.0.0.1';
+    $ip = $_SERVER["REMOTE_ADDR"];
+    return file_get_contents(base_path()."/ip.txt") == $ip || str_starts_with($ip, '192.168.') || $ip == '127.0.0.1';
 }
 
 function yes_no($var, $value = null, $red = false) {
